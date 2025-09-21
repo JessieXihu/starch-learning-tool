@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>澱粉科學互動學習工具</title>
+    <style>
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .section {
+            margin: 40px 0;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .amylose-section {
+            background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 100%);
+        }
+        
+        .amylopectin-section {
+            background: linear-gradient(45deg, #a8edea 0%, #fed6e3 100%);
+        }
+        
+        .gelatinization-section {
+            background: linear-gradient(45deg, #ffecd2 0%, #fcb69f 100%);
+        }
+        
+        .visual-area {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            min-height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .molecule {
+            position: absolute;
+            border-radius: 50%;
+            transition: all 0.8s ease;
+        }
+        
+        .amylose-molecule {
+            background: #e74c3c;
+            width: 8px;
+            height: 8px;
+        }
+        
+        .amylopectin-molecule {
+            background: #3498db;
+            width: 10px;
+            height: 10px;
+        }
+        
+        .water-molecule {
+            background: #74b9ff;
+            width: 6px;
+            height: 6px;
+        }
+        
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            margin: 10px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        
+        .info-box {
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 5px solid #2c3e50;
+        }
+        
+        .temperature-display {
+            text-align: center;
+            font-size: 2em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 20px 0;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-table th {
+            background: #2c3e50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .comparison-table td {
+            padding: 12px 15px;
+            text-align: center;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .bouncing {
+            animation: bounce 0.6s infinite;
+        }
+        
+        @keyframes expand {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.5); opacity: 0.7; }
+        }
+        
+        .expanding {
+            animation: expand 1s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔬 澱粉科學互動學習工具</h1>
+        
+        <!-- 直鏈澱粉區域 -->
+        <div class="section amylose-section">
+            <h2>📏 直鏈澱粉 (Amylose)</h2>
+            <div class="info-box">
+                <strong>特性：</strong>像一條長鏈子，分子排列整齊，容易形成凝膠
+            </div>
+            <div class="visual-area" id="amylose-area">
+                <div class="controls">
+                    <button onclick="showAmylose()">顯示直鏈澱粉結構</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 支鏈澱粉區域 -->
+        <div class="section amylopectin-section">
+            <h2>🌳 支鏈澱粉 (Amylopectin)</h2>
+            <div class="info-box">
+                <strong>特性：</strong>像一棵大樹，有很多分支，提供Q彈口感
+            </div>
+            <div class="visual-area" id="amylopectin-area">
+                <div class="controls">
+                    <button onclick="showAmylopectin()">顯示支鏈澱粉結構</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 比較表格 -->
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>比較項目</th>
+                    <th>直鏈澱粉</th>
+                    <th>支鏈澱粉</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>結構形狀</strong></td>
+                    <td>🔗 直鏈狀</td>
+                    <td>🌳 樹枝狀</td>
+                </tr>
+                <tr>
+                    <td><strong>口感貢獻</strong></td>
+                    <td>韌性、凝膠感</td>
+                    <td>Q彈、黏性</td>
+                </tr>
+                <tr>
+                    <td><strong>在冰皮中的作用</strong></td>
+                    <td>提供結構穩定性</td>
+                    <td>創造Q彈口感</td>
+                </tr>
+                <tr>
+                    <td><strong>主要來源</strong></td>
+                    <td>在來米粉</td>
+                    <td>糯米粉</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- 澱粉糊化區域 -->
+        <div class="section gelatinization-section">
+            <h2>🔥 澱粉糊化過程 (Gelatinization)</h2>
+            <div class="info-box">
+                <strong>原理：</strong>加熱時，澱粉顆粒吸水膨脹，分子鏈打開，形成黏稠的糊狀物
+            </div>
+            
+            <div class="temperature-display" id="temp-display">室溫 25°C</div>
+            
+            <div class="visual-area" id="gelatinization-area">
+                <div class="controls">
+                    <button onclick="startGelatinization()">🔥 開始加熱</button>
+                    <button onclick="resetGelatinization()">🔄 重新開始</button>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <h3>糊化過程解說：</h3>
+                <ul>
+                    <li><strong>60-70°C：</strong>澱粉顆粒開始吸水膨脹</li>
+                    <li><strong>70-85°C：</strong>分子鏈開始解開，黏度上升</li>
+                    <li><strong>85-95°C：</strong>完全糊化，形成透明糊狀</li>
+                    <li><strong>冷卻後：</strong>重新凝固，形成Q彈凝膠</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let gelatinizationStage = 0;
+        let temperature = 25;
+
+        function showAmylose() {
+            const area = document.getElementById('amylose-area');
+            area.innerHTML = '<div class="controls"><button onclick="showAmylose()">顯示直鏈澱粉結構</button></div>';
+            
+            // 創建直鏈澱粉分子
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const molecule = document.createElement('div');
+                    molecule.className = 'molecule amylose-molecule';
+                    molecule.style.left = (50 + i * 25) + 'px';
+                    molecule.style.top = '100px';
+                    area.appendChild(molecule);
+                    
+                    if (i > 0) {
+                        // 畫連接線
+                        const line = document.createElement('div');
+                        line.style.position = 'absolute';
+                        line.style.left = (50 + (i-1) * 25 + 8) + 'px';
+                        line.style.top = '104px';
+                        line.style.width = '25px';
+                        line.style.height = '2px';
+                        line.style.background = '#e74c3c';
+                        area.appendChild(line);
+                    }
+                }, i * 100);
+            }
+        }
+
+        function showAmylopectin() {
+            const area = document.getElementById('amylopectin-area');
+            area.innerHTML = '<div class="controls"><button onclick="showAmylopectin()">顯示支鏈澱粉結構</button></div>';
+            
+            // 創建支鏈澱粉分子（樹狀結構）
+            const positions = [
+                {x: 200, y: 150}, // 主幹
+                {x: 225, y: 150},
+                {x: 250, y: 150},
+                {x: 275, y: 150},
+                {x: 300, y: 150},
+                {x: 225, y: 125}, // 分支1
+                {x: 225, y: 100},
+                {x: 275, y: 125}, // 分支2
+                {x: 275, y: 100},
+                {x: 275, y: 75},
+                {x: 250, y: 175}, // 分支3
+                {x: 250, y: 200}
+            ];
+            
+            positions.forEach((pos, i) => {
+                setTimeout(() => {
+                    const molecule = document.createElement('div');
+                    molecule.className = 'molecule amylopectin-molecule bouncing';
+                    molecule.style.left = pos.x + 'px';
+                    molecule.style.top = pos.y + 'px';
+                    area.appendChild(molecule);
+                }, i * 150);
+            });
+        }
+
+        function startGelatinization() {
+            if (gelatinizationStage >= 4) return;
+            
+            const area = document.getElementById('gelatinization-area');
+            const tempDisplay = document.getElementById('temp-display');
+            
+            if (gelatinizationStage === 0) {
+                // 初始狀態：添加澱粉顆粒
+                area.innerHTML = '<div class="controls"><button onclick="startGelatinization()">🔥 開始加熱</button><button onclick="resetGelatinization()">🔄 重新開始</button></div>';
+                
+                for (let i = 0; i < 8; i++) {
+                    const starch = document.createElement('div');
+                    starch.className = 'molecule';
+                    starch.style.background = '#f39c12';
+                    starch.style.width = '20px';
+                    starch.style.height = '20px';
+                    starch.style.left = (100 + i * 60) + 'px';
+                    starch.style.top = '100px';
+                    starch.style.borderRadius = '3px';
+                    area.appendChild(starch);
+                }
+            }
+            
+            gelatinizationStage++;
+            
+            switch(gelatinizationStage) {
+                case 1:
+                    temperature = 65;
+                    tempDisplay.textContent = `加熱中 ${temperature}°C - 澱粉開始吸水`;
+                    // 添加水分子
+                    for (let i = 0; i < 15; i++) {
+                        const water = document.createElement('div');
+                        water.className = 'molecule water-molecule bouncing';
+                        water.style.left = (50 + Math.random() * 400) + 'px';
+                        water.style.top = (80 + Math.random() * 100) + 'px';
+                        area.appendChild(water);
+                    }
+                    break;
+                    
+                case 2:
+                    temperature = 80;
+                    tempDisplay.textContent = `加熱中 ${temperature}°C - 澱粉膨脹`;
+                    // 澱粉顆粒膨脹
+                    const starches = area.querySelectorAll('.molecule:not(.water-molecule)');
+                    starches.forEach(starch => {
+                        starch.style.transform = 'scale(1.5)';
+                        starch.style.opacity = '0.8';
+                    });
+                    break;
+                    
+                case 3:
+                    temperature = 95;
+                    tempDisplay.textContent = `加熱中 ${temperature}°C - 完全糊化`;
+                    // 形成糊狀
+                    area.style.background = 'linear-gradient(45deg, rgba(243,156,18,0.3), rgba(241,196,15,0.3))';
+                    const allMolecules = area.querySelectorAll('.molecule');
+                    allMolecules.forEach(molecule => {
+                        molecule.classList.add('expanding');
+                    });
+                    break;
+                    
+                case 4:
+                    temperature = 25;
+                    tempDisplay.textContent = `冷卻後 ${temperature}°C - 形成Q彈凝膠`;
+                    area.style.background = 'linear-gradient(45deg, rgba(52,152,219,0.2), rgba(155,89,182,0.2))';
+                    setTimeout(() => {
+                        const gel = document.createElement('div');
+                        gel.textContent = '🥮 Q彈冰皮完成！';
+                        gel.style.position = 'absolute';
+                        gel.style.left = '50%';
+                        gel.style.top = '50%';
+                        gel.style.transform = 'translate(-50%, -50%)';
+                        gel.style.fontSize = '2em';
+                        gel.style.fontWeight = 'bold';
+                        gel.style.color = '#2c3e50';
+                        area.appendChild(gel);
+                    }, 1000);
+                    break;
+            }
+        }
+
+        function resetGelatinization() {
+            gelatinizationStage = 0;
+            temperature = 25;
+            const area = document.getElementById('gelatinization-area');
+            const tempDisplay = document.getElementById('temp-display');
+            
+            area.innerHTML = '<div class="controls"><button onclick="startGelatinization()">🔥 開始加熱</button><button onclick="resetGelatinization()">🔄 重新開始</button></div>';
+            area.style.background = 'white';
+            tempDisplay.textContent = '室溫 25°C';
+        }
+
+        // 初始化顯示
+        window.onload = function() {
+            showAmylose();
+            showAmylopectin();
+        };
+    </script>
+</body>
+</html>
